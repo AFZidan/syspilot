@@ -18,7 +18,10 @@ flake8-comprehensions>=3.14.0
 flake8-simplify>=0.21.0
 pylint>=3.0.0
 mypy>=1.8.0
-types-all>=1.0.0
+# Type stubs for common packages (instead of types-all which has conflicts)
+types-requests>=2.31.0
+types-psutil>=5.9.0
+types-Pillow>=10.0.0
 
 # Security scanning
 bandit>=1.7.5

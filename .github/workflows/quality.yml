@@ -34,30 +34,42 @@ jobs:
     - name: 📦 Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+        # Install Node.js tools separately
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm
+        npm install -g markdownlint-cli2
+
+        # Install system tools for license checking
+        sudo apt-get install -y licensecheck
 
     - name: 📊 Code Complexity Analysis (Radon)
       run: |
         echo "## Code Complexity Report" > complexity-report.md
         echo "### Cyclomatic Complexity" >> complexity-report.md
-        radon cc syspilot/ --average --show-complexity | tee -a complexity-report.md
+        radon cc syspilot/ --average --show-complexity | tee -a complexity-report.md || echo "Radon CC analysis failed" >> complexity-report.md
         echo "" >> complexity-report.md
         echo "### Maintainability Index" >> complexity-report.md
-        radon mi syspilot/ --show --sort | tee -a complexity-report.md
+        radon mi syspilot/ --show --sort | tee -a complexity-report.md || echo "Radon MI analysis failed" >> complexity-report.md
         echo "" >> complexity-report.md
         echo "### Raw Metrics" >> complexity-report.md
-        radon raw syspilot/ | tee -a complexity-report.md
+        radon raw syspilot/ | tee -a complexity-report.md || echo "Radon raw analysis failed" >> complexity-report.md
 
     - name: 📊 Code Quality Score (Xenon)
       run: |
         echo "## Code Quality Score" >> complexity-report.md
-        xenon --max-absolute A --max-modules A --max-average A syspilot/ | tee -a complexity-report.md || true
+        xenon --max-absolute A --max-modules A --max-average A syspilot/ | tee -a complexity-report.md || echo "Xenon analysis failed" >> complexity-report.md
 
     - name: 📊 License Check
       run: |
         echo "## License Compliance" > license-report.md
-        licensecheck --zero-projects-is-okay syspilot/ | tee -a license-report.md || true
+        if command -v licensecheck >/dev/null 2>&1; then
+          licensecheck --zero-projects-is-okay syspilot/ | tee -a license-report.md || true
+        else
+          echo "License check tool not available" >> license-report.md
+        fi
 
     - name: 📊 Code Duplication Check
       run: |
@@ -99,8 +111,8 @@ jobs:
     - name: 📦 Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
 
     - name: ⚡ Memory Profiling
       env:
@@ -160,8 +172,8 @@ jobs:
     - name: 📦 Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
 
     - name: 📚 Docstring Coverage
       run: |

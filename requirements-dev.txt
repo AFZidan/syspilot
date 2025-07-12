@@ -55,8 +55,5 @@ line-profiler>=4.1.0
 radon>=6.0.1
 xenon>=0.9.1
 
-# License checking
-licensecheck>=2023.3.1
-
-# Markdown linting
-markdownlint-cli2>=0.11.0
+# Note: markdownlint-cli2 and licensecheck are installed separately in CI workflows
+# as they have different installation requirements

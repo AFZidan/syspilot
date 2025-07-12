@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SysPilot
+Comment=Professional System Automation & Cleanup Tool
+Comment[es]=Herramienta Profesional de Automatización y Limpieza del Sistema
+Comment[fr]=Outil Professionnel d'Automatisation et de Nettoyage du Système
+Comment[de]=Professionelles System-Automatisierungs- und Reinigungstool
+Exec=syspilot
+Icon=syspilot_icon
+Terminal=false
+Categories=System;Utility;
+Keywords=system;cleanup;cleaner;optimization;automation;pilot;maintenance;
+StartupNotify=true
+MimeType=application/x-desktop;

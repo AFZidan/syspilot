@@ -1,0 +1,123 @@
+# SysPilot .gitattributes
+# Define file attributes for proper handling across platforms
+
+# Set default behavior for all files
+* text=auto
+
+# Python files
+*.py text eol=lf
+*.pyx text eol=lf
+*.pyi text eol=lf
+
+# Configuration files
+*.ini text eol=lf
+*.cfg text eol=lf
+*.conf text eol=lf
+*.config text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.rst text eol=lf
+*.txt text eol=lf
+LICENSE text eol=lf
+README text eol=lf
+CHANGELOG text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+
+# Batch files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Web files
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+
+# Qt files
+*.ui text eol=lf
+*.qrc text eol=lf
+*.ts text eol=lf
+
+# Makefiles
+Makefile text eol=lf
+*.mk text eol=lf
+
+# Docker files
+Dockerfile text eol=lf
+.dockerignore text eol=lf
+
+# CI/CD files
+.travis.yml text eol=lf
+.gitlab-ci.yml text eol=lf
+*.yml text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.bmp binary
+*.tiff binary
+*.svg binary
+
+# Font files
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+
+# Archive files
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+
+# Executable files
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.app binary
+*.deb binary
+*.rpm binary
+*.msi binary
+*.dmg binary
+*.pkg binary
+
+# Database files
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# Audio/Video files
+*.mp3 binary
+*.mp4 binary
+*.avi binary
+*.wav binary
+*.mov binary
+
+# Other binary files
+*.pdf binary
+*.psd binary
+*.ai binary
+
+# Python bytecode
+*.pyc binary
+*.pyo binary
+
+# Special handling for specific project files
+requirements*.txt text eol=lf
+setup.py text eol=lf
+setup.cfg text eol=lf
+pytest.ini text eol=lf
+.pre-commit-config.yaml text eol=lf

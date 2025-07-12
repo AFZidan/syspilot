@@ -1,0 +1,297 @@
+# SysPilot .gitignore
+# Comprehensive gitignore for Python Qt cross-platform application
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+logs/
+log/
+
+# Configuration files (keep templates, ignore actual configs)
+config.ini
+config.json
+settings.ini
+.env.local
+.env.production
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Qt specific
+*.qmlc
+*.jsc
+.qmake.cache
+.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qm
+
+# PyQt5/PySide2 compiled files
+*.ui~
+*.pyc
+*.pyo
+
+# Build and distribution
+build/
+dist/
+*.deb
+*.rpm
+*.msi
+*.dmg
+*.pkg
+*.tar.gz
+*.zip
+*.exe
+*.app
+
+# Platform specific build artifacts
+# Linux
+*.so
+*.a
+*.o
+
+# Windows
+*.dll
+*.lib
+*.pdb
+*.exp
+
+# macOS
+*.dylib
+*.framework
+
+# Installer packages
+syspilot*.deb
+syspilot*.rpm
+syspilot*.msi
+syspilot*.dmg
+syspilot*.pkg
+syspilot*.exe
+
+# Development and testing
+.coverage
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Documentation builds
+docs/_build/
+docs/build/
+site/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# Project specific
+
+# SysPilot configuration and runtime
+config.json
+*.pid
+.config/syspilot/
+
+# Asset cache/generated files
+assets/cache/
+assets/generated/
+
+# Temporary monitoring data
+monitoring_data/
+temp_data/
+
+# System specific directories
+system_cache/
+user_data/
+
+# Platform build directories
+platforms/*/build/
+platforms/*/dist/
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Lock files
+*.lock
+
+# Archives
+*.7z
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.test
+
+# Temporary folders
+tmp/
+temp/
+
+# System monitoring temp files
+/var/log/syspilot/
+/var/cache/syspilot/
+/tmp/syspilot/
+
+# Cross-platform build outputs
+/build-linux/
+/build-windows/
+/build-macos/
+
+# End of .gitignore

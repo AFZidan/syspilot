@@ -1,0 +1,53 @@
+# Cross-Platform Build Configuration for SysPilot
+
+## Linux Build (Current)
+build-linux:
+	@echo "Building SysPilot for Linux..."
+	python setup.py bdist_wheel
+	python setup.py bdist_deb
+
+## Windows Build (Future)
+build-windows:
+	@echo "Building SysPilot for Windows..."
+	@echo "TODO: Implement Windows build with PyInstaller or cx_Freeze"
+	# pyinstaller --onefile --windowed --icon=assets/syspilot_icon.ico syspilot/main.py
+	# OR
+	# python setup.py bdist_msi
+
+## macOS Build (Future)  
+build-macos:
+	@echo "Building SysPilot for macOS..."
+	@echo "TODO: Implement macOS build with PyInstaller or py2app"
+	# pyinstaller --onefile --windowed --icon=assets/syspilot_icon.icns syspilot/main.py
+	# OR
+	# python setup.py py2app
+
+## Cross-Platform Dependencies
+install-cross-platform-deps:
+	pip install pyinstaller
+	pip install setuptools
+	pip install wheel
+
+## Platform-specific Dependencies
+install-linux-deps:
+	sudo apt-get update
+	sudo apt-get install python3-dev python3-psutil
+
+install-windows-deps:
+	@echo "TODO: Windows-specific dependencies"
+	# chocolatey packages or pip install wmi pywin32
+
+install-macos-deps:
+	@echo "TODO: macOS-specific dependencies"
+	# brew install packages or pip install pyobjc
+
+## Testing Cross-Platform
+test-cross-platform:
+	python -m pytest tests/ -v --tb=short
+	python -m pytest tests/test_platforms.py -v
+
+## Platform Detection
+detect-platform:
+	@python -c "from syspilot.platforms import get_platform, is_platform_supported; print(f'Platform: {get_platform()}, Supported: {is_platform_supported()}')"
+
+.PHONY: build-linux build-windows build-macos install-cross-platform-deps install-linux-deps install-windows-deps install-macos-deps test-cross-platform detect-platform

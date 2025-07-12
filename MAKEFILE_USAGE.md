@@ -76,6 +76,7 @@ sudo apt install -y python3 python3-pip python3-venv python3-dev \
 ### For .deb Package Creation
 
 The Makefile automatically handles .deb package creation, but you need:
+
 - `fakeroot` - For building packages without root
 - `dpkg-dev` - Debian package development tools
 
@@ -151,6 +152,7 @@ The built .deb package includes:
 ### Dependencies
 
 The .deb package automatically handles these dependencies:
+
 - `python3 (>= 3.8)`
 - `python3-pip`
 - `python3-venv`
@@ -161,6 +163,7 @@ The .deb package automatically handles these dependencies:
 ### Post-installation
 
 After installing the .deb package:
+
 1. Python dependencies are automatically installed
 2. Desktop database is updated
 3. The application is available as `syspilot` command
@@ -191,23 +194,27 @@ make setup PYTHON=python3.11
 ### Common Issues
 
 1. **Permission denied during install**
+
    ```bash
    sudo make install
    ```
 
 2. **Missing dependencies**
+
    ```bash
    make check-deps
    sudo apt install python3-dev build-essential
    ```
 
 3. **Virtual environment issues**
+
    ```bash
    make dist-clean
    make setup
    ```
 
 4. **Package build fails**
+
    ```bash
    sudo apt install fakeroot dpkg-dev
    make clean

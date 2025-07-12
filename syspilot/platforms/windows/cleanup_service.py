@@ -4,8 +4,8 @@ TODO: Implement Windows-specific cleanup operations
 """
 
 import os
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -15,11 +15,11 @@ class CleanupService:
     Windows-specific cleanup service
     TODO: Implement Windows temp files, cache, and registry cleanup
     """
-    
+
     def __init__(self, config=None):
         self.config = config
         self.logger = None
-        
+
     def clean_temp_files(self) -> Dict:
         """
         Clean Windows temporary files
@@ -27,11 +27,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['Windows cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["Windows cleanup not yet implemented"],
         }
-    
+
     def clean_cache_files(self) -> Dict:
         """
         Clean Windows cache files
@@ -39,11 +39,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['Windows cache cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["Windows cache cleanup not yet implemented"],
         }
-    
+
     def clean_logs(self) -> Dict:
         """
         Clean Windows log files
@@ -51,11 +51,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['Windows log cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["Windows log cleanup not yet implemented"],
         }
-    
+
     def run_cleanup(self) -> Dict:
         """
         Run comprehensive Windows cleanup
@@ -63,10 +63,10 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'temp_files_cleaned': 0,
-            'cache_files_cleaned': 0,
-            'log_files_cleaned': 0,
-            'space_freed': '0 MB',
-            'time_taken': '0 seconds',
-            'errors': ['Windows cleanup not yet implemented']
+            "temp_files_cleaned": 0,
+            "cache_files_cleaned": 0,
+            "log_files_cleaned": 0,
+            "space_freed": "0 MB",
+            "time_taken": "0 seconds",
+            "errors": ["Windows cleanup not yet implemented"],
         }

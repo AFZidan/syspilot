@@ -7,6 +7,7 @@
 ## 🚀 Key Features Implemented
 
 ### 1. **System Cleanup** 🧹
+
 - **Temporary files cleanup**: Cleans `/tmp`, `/var/tmp`, user cache directories
 - **Cache files cleanup**: Browser cache, system cache, thumbnail cache
 - **Log files cleanup**: System logs, application logs with age-based filtering
@@ -17,6 +18,7 @@
 - **Progress tracking**: Real-time progress updates during cleanup
 
 ### 2. **System Monitoring** 📊
+
 - **Real-time metrics**: CPU, Memory, Disk usage monitoring
 - **Top processes**: Shows top 3 resource-consuming processes
 - **Network monitoring**: Network I/O statistics and rates
@@ -26,6 +28,7 @@
 - **Auto-refresh**: Configurable monitoring intervals
 
 ### 3. **User Interface** 🖥️
+
 - **Modern PyQt5 GUI**: Tabbed interface with three main sections
 - **System tray integration**: Runs in background with tray icon
 - **Interactive CLI**: Full command-line interface with menus
@@ -34,6 +37,7 @@
 - **Responsive design**: Non-blocking UI operations
 
 ### 4. **Background Operation** ⚙️
+
 - **Daemon mode**: Runs as background service
 - **Scheduled cleanup**: Configurable automatic cleanup
 - **System tray notifications**: Non-intrusive alerts
@@ -41,6 +45,7 @@
 - **Auto-start capability**: Can start with system boot
 
 ### 5. **Configuration Management** ⚙️
+
 - **JSON-based config**: User-friendly configuration files
 - **Default settings**: Sensible defaults with validation
 - **Customizable rules**: User-defined cleanup patterns
@@ -48,6 +53,7 @@
 - **Configuration validation**: Prevents invalid settings
 
 ### 6. **Installation & Deployment** 📦
+
 - **Automated installer**: One-command installation script
 - **Desktop integration**: .desktop file for application menu
 - **Command-line wrapper**: Global `syspilot` command
@@ -57,6 +63,7 @@
 ## 🏗️ Architecture
 
 ### **Core Components**
+
 ```
 syspilot/
 ├── core/                   # Main application components
@@ -77,6 +84,7 @@ syspilot/
 ```
 
 ### **Key Technologies**
+
 - **Python 3.8+**: Core programming language
 - **PyQt5**: GUI framework
 - **psutil**: System monitoring library
@@ -87,6 +95,7 @@ syspilot/
 ## 🧪 Testing & Quality
 
 ### **Test Coverage**
+
 - **90%+ code coverage**: Comprehensive test suite
 - **Unit tests**: Individual component testing
 - **Integration tests**: Component interaction testing
@@ -94,6 +103,7 @@ syspilot/
 - **Error handling**: Exception and edge case testing
 
 ### **Quality Assurance**
+
 - **Code formatting**: Black, isort
 - **Linting**: flake8, pylint
 - **Type checking**: mypy
@@ -103,12 +113,14 @@ syspilot/
 ## 🎨 Brand Identity
 
 ### **Logo Design**
+
 - **Unique branding**: Custom-designed broom icon
 - **Clean aesthetic**: Green color scheme representing cleanliness
 - **Modern design**: SVG and PNG formats
 - **Scalable**: Works at different sizes
 
 ### **Application Name**
+
 - **"SysPilot"**: Descriptive and memorable
 - **Clear purpose**: Immediately conveys functionality
 - **Platform-specific**: Targets Ubuntu/Debian users
@@ -116,6 +128,7 @@ syspilot/
 ## 📋 Usage Examples
 
 ### **GUI Mode**
+
 ```bash
 # Launch GUI application
 syspilot
@@ -125,6 +138,7 @@ python3 main.py
 ```
 
 ### **CLI Mode**
+
 ```bash
 # Interactive CLI
 syspilot --cli
@@ -137,6 +151,7 @@ syspilot --system-info
 ```
 
 ### **Daemon Mode**
+
 ```bash
 # Start background daemon
 syspilot --daemon
@@ -148,6 +163,7 @@ systemctl --user enable syspilot.service
 ## 🚀 Installation Process
 
 ### **Quick Install**
+
 ```bash
 git clone https://github.com/your-username/syspilot.git
 cd syspilot
@@ -156,6 +172,7 @@ chmod +x install.sh
 ```
 
 ### **What Gets Installed**
+
 - Application files in `~/.local/share/syspilot/`
 - Desktop entry in `~/.local/share/applications/`
 - Command wrapper in `~/.local/bin/`
@@ -165,12 +182,14 @@ chmod +x install.sh
 ## 📊 Performance Characteristics
 
 ### **Resource Usage**
+
 - **Memory footprint**: ~50-100MB (GUI), ~10-20MB (daemon)
 - **CPU usage**: Minimal when idle, scales with cleanup operations
 - **Disk I/O**: Optimized for batch operations
 - **Network**: No network requirements
 
 ### **Scalability**
+
 - **Large filesystems**: Efficient directory traversal
 - **Many files**: Batch processing with progress updates
 - **Long-running**: Stable daemon operation
@@ -179,12 +198,14 @@ chmod +x install.sh
 ## 🔒 Security Features
 
 ### **Safe Operations**
+
 - **Permission checks**: Validates file access before operations
 - **No root required**: Operates with user permissions
 - **Configuration validation**: Prevents dangerous settings
 - **Secure temp handling**: Proper temporary file management
 
 ### **Privacy**
+
 - **Local only**: No network communication
 - **User data**: Operates only on user-accessible files
 - **No telemetry**: No data collection or reporting
@@ -193,6 +214,7 @@ chmod +x install.sh
 ## 🎯 Future Enhancements
 
 ### **Planned Features**
+
 - **Advanced scheduling**: Flexible cleanup schedules
 - **Disk usage analyzer**: Visual disk space analysis
 - **Custom cleanup rules**: User-defined patterns
@@ -201,6 +223,7 @@ chmod +x install.sh
 - **Plugin system**: Extensible architecture
 
 ### **Performance Improvements**
+
 - **Parallel processing**: Multi-threaded operations
 - **Caching**: Improved performance for repeated operations
 - **Memory optimization**: Reduced memory usage
@@ -209,12 +232,14 @@ chmod +x install.sh
 ## 📈 Project Statistics
 
 ### **Code Metrics**
+
 - **Lines of code**: ~3,000+ lines
 - **Test coverage**: 90%+
 - **Documentation**: Comprehensive README, docstrings
 - **Files**: 25+ Python files, 10+ configuration files
 
 ### **Features Implemented**
+
 - ✅ System cleanup (7 different types)
 - ✅ Real-time monitoring (5 metrics)
 - ✅ GUI interface (3 tabs)

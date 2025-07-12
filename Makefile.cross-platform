@@ -14,7 +14,7 @@ build-windows:
 	# OR
 	# python setup.py bdist_msi
 
-## macOS Build (Future)  
+## macOS Build (Future)
 build-macos:
 	@echo "Building SysPilot for macOS..."
 	@echo "TODO: Implement macOS build with PyInstaller or py2app"

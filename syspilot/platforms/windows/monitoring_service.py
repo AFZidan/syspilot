@@ -4,9 +4,10 @@ TODO: Implement Windows-specific system monitoring
 """
 
 import os
-import psutil
 import time
 from typing import Dict, List, Optional
+
+import psutil
 
 
 class MonitoringService:
@@ -14,42 +15,42 @@ class MonitoringService:
     Windows-specific monitoring service
     TODO: Implement Windows Performance Counters and WMI monitoring
     """
-    
+
     def __init__(self, config=None):
         self.config = config
         self.logger = None
-        
+
     def get_cpu_usage(self) -> float:
         """Get Windows CPU usage"""
         # Basic implementation using psutil (works cross-platform)
         return psutil.cpu_percent(interval=1)
-    
+
     def get_memory_usage(self) -> Dict:
         """Get Windows memory usage"""
         # Basic implementation using psutil (works cross-platform)
         memory = psutil.virtual_memory()
         return {
-            'total': memory.total,
-            'available': memory.available,
-            'percent': memory.percent,
-            'used': memory.used,
-            'free': memory.free
+            "total": memory.total,
+            "available": memory.available,
+            "percent": memory.percent,
+            "used": memory.used,
+            "free": memory.free,
         }
-    
+
     def get_disk_usage(self) -> Dict:
         """
         Get Windows disk usage
         TODO: Implement Windows-specific disk monitoring with drive letters
         """
         # Basic implementation using psutil (works cross-platform)
-        disk = psutil.disk_usage('C:' if os.name == 'nt' else '/')
+        disk = psutil.disk_usage("C:" if os.name == "nt" else "/")
         return {
-            'total': disk.total,
-            'used': disk.used,
-            'free': disk.free,
-            'percent': (disk.used / disk.total) * 100
+            "total": disk.total,
+            "used": disk.used,
+            "free": disk.free,
+            "percent": (disk.used / disk.total) * 100,
         }
-    
+
     def get_cpu_temperature(self) -> Optional[float]:
         """
         Get Windows CPU temperature
@@ -58,50 +59,54 @@ class MonitoringService:
         # Windows temperature monitoring requires specific implementations
         # Placeholder - return None for now
         return None
-    
+
     def get_network_io(self) -> Dict:
         """Get Windows network I/O statistics"""
         # Basic implementation using psutil (works cross-platform)
         net_io = psutil.net_io_counters()
         return {
-            'bytes_sent': net_io.bytes_sent,
-            'bytes_recv': net_io.bytes_recv,
-            'packets_sent': net_io.packets_sent,
-            'packets_recv': net_io.packets_recv
+            "bytes_sent": net_io.bytes_sent,
+            "bytes_recv": net_io.bytes_recv,
+            "packets_sent": net_io.packets_sent,
+            "packets_recv": net_io.packets_recv,
         }
-    
+
     def get_top_processes(self, limit: int = 5) -> List[Dict]:
         """Get top Windows processes by CPU usage"""
         # Basic implementation using psutil (works cross-platform)
         processes = []
-        for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']):
+        for proc in psutil.process_iter(
+            ["pid", "name", "cpu_percent", "memory_percent"]
+        ):
             try:
-                processes.append({
-                    'pid': proc.info['pid'],
-                    'name': proc.info['name'],
-                    'cpu_percent': proc.info['cpu_percent'],
-                    'memory_percent': proc.info['memory_percent']
-                })
+                processes.append(
+                    {
+                        "pid": proc.info["pid"],
+                        "name": proc.info["name"],
+                        "cpu_percent": proc.info["cpu_percent"],
+                        "memory_percent": proc.info["memory_percent"],
+                    }
+                )
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 pass
-        
+
         # Sort by CPU usage and return top processes
-        processes.sort(key=lambda x: x['cpu_percent'] or 0, reverse=True)
+        processes.sort(key=lambda x: x["cpu_percent"] or 0, reverse=True)
         return processes[:limit]
-    
+
     def get_system_stats(self) -> Dict:
         """
         Get comprehensive Windows system statistics
         TODO: Add Windows-specific monitoring features
         """
         return {
-            'cpu_percent': self.get_cpu_usage(),
-            'memory': self.get_memory_usage(),
-            'memory_percent': self.get_memory_usage()['percent'],
-            'disk': self.get_disk_usage(),
-            'disk_percent': self.get_disk_usage()['percent'],
-            'cpu_temperature': self.get_cpu_temperature(),
-            'network_io': self.get_network_io(),
-            'top_processes': self.get_top_processes(),
-            'platform': 'windows'
+            "cpu_percent": self.get_cpu_usage(),
+            "memory": self.get_memory_usage(),
+            "memory_percent": self.get_memory_usage()["percent"],
+            "disk": self.get_disk_usage(),
+            "disk_percent": self.get_disk_usage()["percent"],
+            "cpu_temperature": self.get_cpu_temperature(),
+            "network_io": self.get_network_io(),
+            "top_processes": self.get_top_processes(),
+            "platform": "windows",
         }

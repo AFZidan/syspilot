@@ -1,0 +1,245 @@
+name: 🔒 Security & Dependency Updates
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      update_type:
+        description: 'Type of update to perform'
+        required: true
+        default: 'security'
+        type: choice
+        options:
+        - security
+        - dependencies
+        - all
+
+env:
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  # Security Audit
+  security-audit:
+    name: 🔍 Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit semgrep
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+
+    - name: 🔍 Run Safety Check
+      run: |
+        safety check --json --output safety-report.json || true
+        safety check
+      continue-on-error: true
+
+    - name: 🔍 Run Bandit Security Scan
+      run: |
+        bandit -r syspilot/ -f json -o bandit-report.json || true
+        bandit -r syspilot/ --severity-level medium
+      continue-on-error: true
+
+    - name: 🔍 Run Semgrep Security Analysis
+      run: |
+        semgrep --config=auto syspilot/ --json --output=semgrep-report.json || true
+        semgrep --config=auto syspilot/
+      continue-on-error: true
+
+    - name: 📤 Upload Security Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          safety-report.json
+          bandit-report.json
+          semgrep-report.json
+
+  # Dependency Update Check
+  dependency-check:
+    name: 📦 Dependency Updates
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install pip-tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-tools pip-audit
+
+    - name: 🔍 Check for Outdated Dependencies
+      run: |
+        pip list --outdated --format=json > outdated-deps.json
+        echo "Outdated dependencies:"
+        cat outdated-deps.json | python -m json.tool
+
+    - name: 🔍 Security Audit of Dependencies
+      run: |
+        pip-audit --format=json --output=pip-audit-report.json || true
+        pip-audit
+      continue-on-error: true
+
+    - name: 📤 Upload Dependency Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: dependency-reports
+        path: |
+          outdated-deps.json
+          pip-audit-report.json
+
+  # Create Security Issue
+  create-security-issue:
+    name: 📋 Create Security Issue
+    runs-on: ubuntu-latest
+    needs: [security-audit, dependency-check]
+    if: always() && (needs.security-audit.result == 'failure' || needs.dependency-check.result == 'failure')
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 📥 Download Reports
+      uses: actions/download-artifact@v3
+      with:
+        path: reports/
+
+    - name: 📋 Create Security Issue
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+
+          let issueBody = '## 🚨 Security Audit Alert\n\n';
+          issueBody += 'Automated security scan detected potential issues:\n\n';
+
+          // Check if reports exist and add content
+          const reportsDir = './reports';
+          if (fs.existsSync(reportsDir)) {
+            const files = fs.readdirSync(reportsDir, { recursive: true });
+            for (const file of files) {
+              if (file.endsWith('.json')) {
+                issueBody += `### ${file}\n`;
+                issueBody += '```json\n';
+                try {
+                  const content = fs.readFileSync(path.join(reportsDir, file), 'utf8');
+                  issueBody += content.substring(0, 1000) + (content.length > 1000 ? '...\n[truncated]' : '');
+                } catch (e) {
+                  issueBody += 'Failed to read report';
+                }
+                issueBody += '\n```\n\n';
+              }
+            }
+          }
+
+          issueBody += '## Actions Required\n';
+          issueBody += '- [ ] Review security findings\n';
+          issueBody += '- [ ] Update vulnerable dependencies\n';
+          issueBody += '- [ ] Apply security patches\n';
+          issueBody += '- [ ] Re-run security tests\n\n';
+          issueBody += `**Workflow Run:** ${context.payload.repository.html_url}/actions/runs/${context.runId}`;
+
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🚨 Security Alert - ${new Date().toISOString().split('T')[0]}`,
+            body: issueBody,
+            labels: ['security', 'urgent', 'automated']
+          });
+
+  # Automated PR for dependency updates
+  create-update-pr:
+    name: 🔄 Create Update PR
+    runs-on: ubuntu-latest
+    if: github.event.inputs.update_type == 'dependencies' || github.event.inputs.update_type == 'all' || github.event_name == 'schedule'
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install pip-tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-tools
+
+    - name: 🔄 Update Dependencies
+      run: |
+        # Update requirements.txt
+        pip-compile --upgrade requirements.in || pip-compile --upgrade requirements.txt
+
+        # Update dev requirements
+        pip-compile --upgrade requirements-dev.in || pip-compile --upgrade requirements-dev.txt
+
+    - name: 🔍 Check for Changes
+      id: changes
+      run: |
+        if git diff --quiet requirements.txt requirements-dev.txt; then
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: 🔄 Create Pull Request
+      if: steps.changes.outputs.has_changes == 'true'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore(deps): update dependencies'
+        title: '🔄 Automated Dependency Updates'
+        body: |
+          ## 🔄 Automated Dependency Updates
+
+          This PR contains automated updates to project dependencies.
+
+          ### Changes
+          - Updated Python package dependencies
+          - Updated development dependencies
+
+          ### Testing
+          - [ ] All existing tests pass
+          - [ ] Security scan shows no new vulnerabilities
+          - [ ] Manual testing of core functionality
+
+          ### Notes
+          This PR was automatically created by the dependency update workflow.
+          Please review changes carefully before merging.
+
+          **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        branch: automated/dependency-updates
+        labels: |
+          dependencies
+          automated
+          maintenance
+        draft: false

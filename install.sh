@@ -124,17 +124,17 @@ if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
     echo "Adding $HOME/.local/bin to PATH..."
     echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
     echo "PATH updated in ~/.bashrc"
-    
+
     # Also add to current session
     export PATH="$HOME/.local/bin:$PATH"
     echo "PATH updated for current session"
-    
+
     # Update other shell profiles if they exist
     if [ -f "$HOME/.zshrc" ]; then
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc"
         echo "PATH updated in ~/.zshrc"
     fi
-    
+
     if [ -f "$HOME/.profile" ]; then
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
         echo "PATH updated in ~/.profile"

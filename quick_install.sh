@@ -31,13 +31,13 @@ python3 -m venv venv
 if command -v pip &> /dev/null || python3 -m pip --version &> /dev/null; then
     echo "Installing Python dependencies..."
     source venv/bin/activate
-    
+
     # Try to install requirements
     if [ -f requirements.txt ]; then
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt || echo "Warning: Some dependencies failed to install"
     fi
-    
+
     deactivate
 else
     echo "Warning: pip not available, skipping Python dependencies"
@@ -77,7 +77,7 @@ if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
             echo "Updated $config_file"
         fi
     done
-    
+
     # Update current session
     export PATH="$HOME/.local/bin:$PATH"
     echo "PATH updated for current session"

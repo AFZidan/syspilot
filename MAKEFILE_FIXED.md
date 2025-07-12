@@ -50,16 +50,19 @@ Uninstalling .deb package...
 ### 🔧 **Technical Improvements:**
 
 #### **Package Installation Scripts:**
+
 - **postinst**: Handles multiple Python package installation methods
 - **prerm**: Stops daemon processes before removal
 - **postrm**: Safely updates desktop database (ignores errors)
 
 #### **Dependency Management:**
+
 - **System packages**: Automatically installs PyQt5, build tools, etc.
 - **Python packages**: Uses fallback methods for externally-managed environments
 - **Build tools**: Includes fakeroot and dpkg-dev for package creation
 
 #### **Error Handling:**
+
 - **Graceful fallbacks**: Multiple installation methods for Python packages
 - **Dependency fixing**: Automatic `apt --fix-broken install`
 - **Safe removal**: Desktop database updates ignore errors
@@ -102,6 +105,6 @@ make uninstall-deb
 
 ---
 
-**Ready to use**: `make install-deb`  
-**Package location**: `dist/syspilot_1.0.0_all.deb`  
+**Ready to use**: `make install-deb`
+**Package location**: `dist/syspilot_1.0.0_all.deb`
 **Status**: ✅ **Fully Functional**

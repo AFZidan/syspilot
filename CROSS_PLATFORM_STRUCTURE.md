@@ -1,6 +1,7 @@
 # SysPilot Cross-Platform Project Structure
 
 ## Overview
+
 SysPilot has been reorganized to support multiple operating systems using a platform-specific architecture.
 
 ## Project Structure
@@ -44,6 +45,7 @@ syspilot/
 ## Platform Support Status
 
 ### ✅ Linux (Ubuntu/Debian) - COMPLETE
+
 - Full system cleanup functionality
 - Real-time monitoring with CPU temperature
 - Interactive charts and thermometer display
@@ -51,12 +53,14 @@ syspilot/
 - All features working and tested
 
 ### 🚧 Windows - IN PROGRESS (Target: v2.0)
+
 - Basic structure created
 - Placeholder implementations with psutil fallbacks
 - TODO: Windows-specific APIs (WMI, Performance Counters)
 - TODO: Registry cleanup, Windows Services, etc.
 
 ### 📋 macOS - PLANNED (Target: v3.0)
+
 - Basic structure created
 - Placeholder implementations with psutil fallbacks
 - TODO: macOS-specific APIs (IOKit, system_profiler)
@@ -73,6 +77,7 @@ syspilot/
 ## Development Workflow
 
 ### Adding New Platform Support
+
 1. Create platform directory under `syspilot/platforms/`
 2. Implement the three core services:
    - `cleanup_service.py`
@@ -82,6 +87,7 @@ syspilot/
 4. Test with `PlatformFactory.create_*_service()`
 
 ### Adding New Features
+
 1. Design the interface in the base/shared location
 2. Implement in each platform directory
 3. Update the factory if needed
@@ -90,6 +96,7 @@ syspilot/
 ## Testing
 
 Run cross-platform tests:
+
 ```bash
 # Test platform detection
 python -c "from syspilot.platforms import get_platform; print(get_platform())"
@@ -104,6 +111,7 @@ python -m pytest tests/test_platforms.py -v
 ## Build System
 
 Cross-platform build targets:
+
 ```bash
 # Linux (current)
 make build-linux
@@ -111,7 +119,7 @@ make build-linux
 # Windows (future)
 make build-windows
 
-# macOS (future)  
+# macOS (future)
 make build-macos
 ```
 

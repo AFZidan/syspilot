@@ -1,0 +1,285 @@
+name: 📊 Code Quality Analysis
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  schedule:
+    # Run weekly code quality analysis
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  # Code Quality Metrics
+  code-quality:
+    name: 📊 Code Quality Metrics
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
+
+    - name: 📊 Code Complexity Analysis (Radon)
+      run: |
+        echo "## Code Complexity Report" > complexity-report.md
+        echo "### Cyclomatic Complexity" >> complexity-report.md
+        radon cc syspilot/ --average --show-complexity | tee -a complexity-report.md
+        echo "" >> complexity-report.md
+        echo "### Maintainability Index" >> complexity-report.md
+        radon mi syspilot/ --show --sort | tee -a complexity-report.md
+        echo "" >> complexity-report.md
+        echo "### Raw Metrics" >> complexity-report.md
+        radon raw syspilot/ | tee -a complexity-report.md
+
+    - name: 📊 Code Quality Score (Xenon)
+      run: |
+        echo "## Code Quality Score" >> complexity-report.md
+        xenon --max-absolute A --max-modules A --max-average A syspilot/ | tee -a complexity-report.md || true
+
+    - name: 📊 License Check
+      run: |
+        echo "## License Compliance" > license-report.md
+        licensecheck --zero-projects-is-okay syspilot/ | tee -a license-report.md || true
+
+    - name: 📊 Code Duplication Check
+      run: |
+        echo "## Code Duplication Analysis" > duplication-report.md
+        # Using pylint for duplicate code detection
+        pylint syspilot/ --disable=all --enable=duplicate-code --reports=yes | tee -a duplication-report.md || true
+
+    - name: 📤 Upload Quality Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-quality-reports
+        path: |
+          complexity-report.md
+          license-report.md
+          duplication-report.md
+
+  # Performance Analysis
+  performance-analysis:
+    name: ⚡ Performance Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 🖥️ Setup Display
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
+
+    - name: ⚡ Memory Profiling
+      env:
+        DISPLAY: :99
+        QT_QPA_PLATFORM: offscreen
+      run: |
+        echo "## Memory Profile Report" > performance-report.md
+        echo "### Application Startup Memory Usage" >> performance-report.md
+        mprof run python -c "
+        import syspilot
+        from syspilot.platforms.factory import PlatformFactory
+        factory = PlatformFactory()
+        print(f'Platform: {factory.get_platform()}')
+        " || true
+        mprof plot --output=memory-profile.png || true
+        echo "Memory profile completed" >> performance-report.md
+
+    - name: ⚡ Performance Benchmarks
+      env:
+        DISPLAY: :99
+        QT_QPA_PLATFORM: offscreen
+      run: |
+        echo "### Import Time Analysis" >> performance-report.md
+        python -c "
+        import time
+        start = time.time()
+        import syspilot
+        import_time = time.time() - start
+        print(f'Import time: {import_time:.4f} seconds')
+        print(f'Import time: {import_time:.4f} seconds' >> 'performance-report.md')
+        " || true
+
+    - name: 📤 Upload Performance Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-reports
+        path: |
+          performance-report.md
+          memory-profile.png
+          mprofile_*.dat
+
+  # Documentation Quality Check
+  docs-quality:
+    name: 📚 Documentation Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
+
+    - name: 📚 Docstring Coverage
+      run: |
+        echo "## Documentation Coverage Report" > docs-report.md
+        echo "### Docstring Coverage" >> docs-report.md
+        python -c "
+        import ast
+        import os
+
+        def count_docstrings(directory):
+            total_functions = 0
+            documented_functions = 0
+
+            for root, dirs, files in os.walk(directory):
+                for file in files:
+                    if file.endswith('.py'):
+                        filepath = os.path.join(root, file)
+                        try:
+                            with open(filepath, 'r', encoding='utf-8') as f:
+                                tree = ast.parse(f.read())
+
+                            for node in ast.walk(tree):
+                                if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                                    total_functions += 1
+                                    if ast.get_docstring(node):
+                                        documented_functions += 1
+                        except:
+                            continue
+
+            return total_functions, documented_functions
+
+        total, documented = count_docstrings('syspilot')
+        coverage = (documented / total * 100) if total > 0 else 0
+        print(f'Total functions/classes: {total}')
+        print(f'Documented: {documented}')
+        print(f'Coverage: {coverage:.1f}%')
+
+        with open('docs-report.md', 'a') as f:
+            f.write(f'- Total functions/classes: {total}\n')
+            f.write(f'- Documented: {documented}\n')
+            f.write(f'- Coverage: {coverage:.1f}%\n\n')
+        " || true
+
+    - name: 📚 README Quality Check
+      run: |
+        echo "### README Quality" >> docs-report.md
+        if [ -f README.md ]; then
+          wc -l README.md | awk '{print \"- Lines: \" $1}' >> docs-report.md
+          grep -c '^#' README.md | awk '{print \"- Sections: \" $1}' >> docs-report.md || echo "- Sections: 0" >> docs-report.md
+          echo "✅ README.md exists" >> docs-report.md
+        else
+          echo "❌ README.md missing" >> docs-report.md
+        fi
+
+    - name: 📤 Upload Documentation Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation-reports
+        path: docs-report.md
+
+  # Quality Summary
+  quality-summary:
+    name: 📋 Quality Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, performance-analysis, docs-quality]
+    if: always()
+
+    steps:
+    - name: 📥 Download All Reports
+      uses: actions/download-artifact@v3
+      with:
+        path: reports/
+
+    - name: 📋 Generate Quality Summary
+      run: |
+        echo "# 📊 Code Quality Summary" > quality-summary.md
+        echo "" >> quality-summary.md
+        echo "Generated on: $(date)" >> quality-summary.md
+        echo "" >> quality-summary.md
+
+        # Combine all reports
+        if [ -d "reports" ]; then
+          for report_dir in reports/*/; do
+            echo "## $(basename $report_dir | sed 's/-/ /g' | sed 's/\b\w/\U&/g')" >> quality-summary.md
+            for file in $report_dir*.md; do
+              if [ -f "$file" ]; then
+                cat "$file" >> quality-summary.md
+                echo "" >> quality-summary.md
+              fi
+            done
+          done
+        fi
+
+        echo "## Job Status" >> quality-summary.md
+        echo "- Code Quality: ${{ needs.code-quality.result }}" >> quality-summary.md
+        echo "- Performance Analysis: ${{ needs.performance-analysis.result }}" >> quality-summary.md
+        echo "- Documentation Quality: ${{ needs.docs-quality.result }}" >> quality-summary.md
+
+    - name: 📤 Upload Quality Summary
+      uses: actions/upload-artifact@v3
+      with:
+        name: quality-summary
+        path: quality-summary.md
+
+    - name: 💬 Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+
+          if (fs.existsSync('quality-summary.md')) {
+            const summary = fs.readFileSync('quality-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+          }

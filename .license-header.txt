@@ -1,0 +1,6 @@
+# Copyright (c) 2025 SysPilot Contributors
+#
+# Licensed under the MIT License.
+# See LICENSE file in the project root for full license information.
+#
+# SysPilot - Professional System Automation & Cleanup Tool

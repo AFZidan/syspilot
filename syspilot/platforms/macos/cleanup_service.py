@@ -4,8 +4,8 @@ TODO: Implement macOS-specific cleanup operations
 """
 
 import os
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -15,11 +15,11 @@ class CleanupService:
     macOS-specific cleanup service
     TODO: Implement macOS-specific cleanup operations
     """
-    
+
     def __init__(self, config=None):
         self.config = config
         self.logger = None
-        
+
     def clean_temp_files(self) -> Dict:
         """
         Clean macOS temporary files
@@ -27,11 +27,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['macOS cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["macOS cleanup not yet implemented"],
         }
-    
+
     def clean_cache_files(self) -> Dict:
         """
         Clean macOS cache files
@@ -39,11 +39,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['macOS cache cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["macOS cache cleanup not yet implemented"],
         }
-    
+
     def clean_logs(self) -> Dict:
         """
         Clean macOS log files
@@ -51,11 +51,11 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'files_cleaned': 0,
-            'space_freed': '0 MB',
-            'errors': ['macOS log cleanup not yet implemented']
+            "files_cleaned": 0,
+            "space_freed": "0 MB",
+            "errors": ["macOS log cleanup not yet implemented"],
         }
-    
+
     def run_cleanup(self) -> Dict:
         """
         Run comprehensive macOS cleanup
@@ -63,10 +63,10 @@ class CleanupService:
         """
         # Placeholder implementation
         return {
-            'temp_files_cleaned': 0,
-            'cache_files_cleaned': 0,
-            'log_files_cleaned': 0,
-            'space_freed': '0 MB',
-            'time_taken': '0 seconds',
-            'errors': ['macOS cleanup not yet implemented']
+            "temp_files_cleaned": 0,
+            "cache_files_cleaned": 0,
+            "log_files_cleaned": 0,
+            "space_freed": "0 MB",
+            "time_taken": "0 seconds",
+            "errors": ["macOS cleanup not yet implemented"],
         }

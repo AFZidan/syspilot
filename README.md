@@ -7,18 +7,21 @@ A powerful, open-source desktop application for Linux, Windows, and macOS that h
 ## Platform Support
 
 🐧 **Linux (Ubuntu/Debian)** - ✅ **Fully Implemented**
+
 - Complete system cleanup functionality
 - Real-time monitoring with CPU temperature
 - Interactive charts and graphs
 - Background operation and system tray
 
 🪟 **Windows** - 🚧 **Coming Soon** (Planned for v2.0)
+
 - Windows-specific cleanup operations
 - Performance monitoring
 - Registry cleanup
 - Service management
 
 🍎 **macOS** - 🚧 **Coming Soon** (Planned for v3.0)
+
 - macOS-specific cleanup operations
 - System monitoring
 - Application cleanup
@@ -27,6 +30,7 @@ A powerful, open-source desktop application for Linux, Windows, and macOS that h
 ## Features
 
 🧹 **System Cleanup**
+
 - Clean temporary files and directories
 - Remove unnecessary cache files
 - Free up disk space efficiently
@@ -34,6 +38,7 @@ A powerful, open-source desktop application for Linux, Windows, and macOS that h
 - Scheduled automatic cleanup
 
 📊 **System Monitoring**
+
 - Real-time system performance indicators
 - CPU, Memory, and Disk usage monitoring
 - Top 3 resource-consuming processes
@@ -42,6 +47,7 @@ A powerful, open-source desktop application for Linux, Windows, and macOS that h
 - Historical trend analysis
 
 🚀 **Background Operation**
+
 - Runs silently in the background
 - System tray icon for easy access
 - Non-intrusive notifications
@@ -49,6 +55,7 @@ A powerful, open-source desktop application for Linux, Windows, and macOS that h
 - Auto-start capability
 
 ⚙️ **Advanced Features**
+
 - Auto-start on system boot
 - Customizable cleanup schedules
 - Multiple monitoring views
@@ -81,11 +88,13 @@ For detailed Makefile usage, see [MAKEFILE_USAGE.md](MAKEFILE_USAGE.md).
 ## Installation
 
 ### Prerequisites
+
 - Python 3.8 or higher
 - Ubuntu 18.04+ or Debian 10+
 - Required system packages (automatically installed)
 
 ### Recommended Installation (using pipx)
+
 ```bash
 git clone https://github.com/your-username/syspilot.git
 cd syspilot
@@ -96,6 +105,7 @@ chmod +x install_pipx.sh
 This method uses `pipx` to install SysPilot in an isolated environment, which is the recommended approach for Python applications.
 
 ### Alternative Installation (legacy)
+
 ```bash
 git clone https://github.com/your-username/syspilot.git
 cd syspilot
@@ -104,6 +114,7 @@ chmod +x install.sh
 ```
 
 ### Manual Installation
+
 ```bash
 # Install dependencies
 sudo apt update
@@ -123,11 +134,13 @@ sudo python3 setup.py install
 ## Usage
 
 ### GUI Mode
+
 ```bash
 syspilot
 ```
 
 ### CLI Mode
+
 ```bash
 syspilot --cli
 syspilot --clean-temp
@@ -135,6 +148,7 @@ syspilot --system-info
 ```
 
 ### Background Service
+
 ```bash
 syspilot --daemon
 ```
@@ -142,6 +156,7 @@ syspilot --daemon
 ## Development
 
 ### Setup Development Environment
+
 ```bash
 git clone https://github.com/your-username/syspilot.git
 cd syspilot
@@ -151,6 +166,7 @@ pip install -r requirements-dev.txt
 ```
 
 ### Running Tests
+
 ```bash
 # Run all tests
 python -m pytest
@@ -163,6 +179,7 @@ python -m pytest tests/test_cleanup.py
 ```
 
 ### Code Quality
+
 ```bash
 # Format code
 black syspilot/
@@ -178,6 +195,7 @@ pylint syspilot/
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ### Development Process
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -209,6 +227,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 ## 🗺️ Roadmap & TODO List
 
 ### Phase 1: Linux Foundation (✅ COMPLETED)
+
 - [x] ✅ System cleanup service (temp files, cache, logs)
 - [x] ✅ Real-time system monitoring (CPU, Memory, Disk, Network)
 - [x] ✅ CPU temperature monitoring with sensors support
@@ -222,6 +241,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 ### Phase 2: Windows Support (🚧 IN PROGRESS - Target: v2.0)
 
 #### Core Windows Implementation
+
 - [ ] 🔄 Windows-specific cleanup operations
   - [ ] Windows Temp folder (%TEMP%, %TMP%) cleanup
   - [ ] Windows Update cache cleanup
@@ -245,6 +265,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
   - [ ] Event Log management
 
 #### Windows GUI & Integration
+
 - [ ] 🔄 Windows native look and feel
 - [ ] 🔄 Windows system tray integration
 - [ ] 🔄 Windows notifications
@@ -254,6 +275,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 ### Phase 3: macOS Support (📋 PLANNED - Target: v3.0)
 
 #### Core macOS Implementation
+
 - [ ] 📋 macOS-specific cleanup operations
   - [ ] ~/Library/Caches cleanup
   - [ ] ~/Library/Logs cleanup
@@ -277,6 +299,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
   - [ ] Time Machine exclusions
 
 #### macOS GUI & Integration
+
 - [ ] 📋 macOS native look and feel (Cocoa styling)
 - [ ] 📋 Menu bar integration
 - [ ] 📋 macOS notifications
@@ -287,6 +310,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 ### Phase 4: Enhanced Cross-Platform Features (📋 FUTURE)
 
 #### Advanced Monitoring
+
 - [ ] 📋 Historical data persistence and analysis
 - [ ] 📋 Performance benchmarking
 - [ ] 📋 System health scoring
@@ -294,6 +318,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - [ ] 📋 Custom monitoring thresholds
 
 #### Smart Cleanup Features
+
 - [ ] 📋 Machine learning-based cleanup recommendations
 - [ ] 📋 Duplicate file detection and removal
 - [ ] 📋 Large file analysis and management
@@ -301,6 +326,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - [ ] 📋 Cloud storage integration for backups
 
 #### Advanced GUI Features
+
 - [ ] 📋 Dark/Light theme support
 - [ ] 📋 Customizable dashboard layouts
 - [ ] 📋 Plugin architecture for extensions
@@ -308,6 +334,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - [ ] 📋 Accessibility improvements
 
 #### Enterprise Features
+
 - [ ] 📋 Multi-system management dashboard
 - [ ] 📋 Network deployment capabilities
 - [ ] 📋 Centralized configuration management
@@ -315,6 +342,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - [ ] 📋 Policy-based cleanup rules
 
 ### Phase 5: Cloud & Connectivity (📋 FUTURE)
+
 - [ ] 📋 Cloud backup integration
 - [ ] 📋 Remote monitoring capabilities
 - [ ] 📋 Telemetry and usage analytics

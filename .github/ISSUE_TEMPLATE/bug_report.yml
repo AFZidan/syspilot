@@ -1,0 +1,176 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with SysPilot
+title: "[BUG] Brief description of the issue"
+labels: ["bug", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🐛 Bug Report
+
+        Thank you for taking the time to report a bug! Please fill out the form below to help us understand and fix the issue.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have searched existing issues to ensure this bug hasn't been reported before
+          required: true
+        - label: I have read the [Contributing Guidelines](CONTRIBUTING.md)
+          required: true
+        - label: I have provided all the required information below
+          required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 🔍 Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe what happened and what you expected to happen...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: 🔄 Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Expected Behavior
+      description: A clear and concise description of what you expected to happen
+      placeholder: What should have happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: ❌ Actual Behavior
+      description: A clear and concise description of what actually happened
+      placeholder: What actually happened?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: 🖥️ Operating System
+      description: Which operating system are you using?
+      options:
+        - Ubuntu 20.04
+        - Ubuntu 22.04
+        - Ubuntu 24.04
+        - Debian 11
+        - Debian 12
+        - CentOS 7
+        - CentOS 8
+        - RHEL 8
+        - RHEL 9
+        - Fedora 37
+        - Fedora 38
+        - Fedora 39
+        - Arch Linux
+        - Windows 10
+        - Windows 11
+        - macOS 12 (Monterey)
+        - macOS 13 (Ventura)
+        - macOS 14 (Sonoma)
+        - Other (please specify in additional context)
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: 🐍 Python Version
+      description: What version of Python are you using?
+      placeholder: e.g., 3.9.16, 3.10.12, 3.11.5
+    validations:
+      required: true
+
+  - type: input
+    id: syspilot-version
+    attributes:
+      label: 🤖 SysPilot Version
+      description: What version of SysPilot are you using?
+      placeholder: e.g., 1.0.0, main branch, commit hash
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-logs
+    attributes:
+      label: 📝 Error Logs
+      description: If applicable, paste any error messages or logs
+      placeholder: Paste error messages, stack traces, or relevant log output here...
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 Screenshots
+      description: If applicable, add screenshots to help explain your problem
+      placeholder: Drag and drop images here or paste them directly
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 🚨 Severity Level
+      description: How severe is this bug?
+      options:
+        - Critical - Application crashes or data loss
+        - High - Major feature broken
+        - Medium - Minor feature issue
+        - Low - Cosmetic or enhancement
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: 🔄 Frequency
+      description: How often does this bug occur?
+      options:
+        - Always - Every time
+        - Often - Most of the time
+        - Sometimes - Occasionally
+        - Rarely - Hard to reproduce
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: 🔧 System Information
+      description: Additional system information (output of `python main.py --system-info` if available)
+      placeholder: Paste system information here...
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 📋 Additional Context
+      description: Add any other context about the problem here
+      placeholder: Any additional information that might be helpful...
+
+  - type: checkboxes
+    id: investigation
+    attributes:
+      label: 🔍 Investigation Assistance
+      description: Would you be willing to help investigate this issue?
+      options:
+        - label: I can provide additional testing if needed
+        - label: I can help debug this issue
+        - label: I can test potential fixes

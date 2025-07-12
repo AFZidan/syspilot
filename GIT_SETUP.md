@@ -3,22 +3,26 @@
 ## Quick Git Setup
 
 ### 1. Initialize Repository (if not already done)
+
 ```bash
 git init
 ```
 
 ### 2. Configure Git (if first time)
+
 ```bash
 git config user.name "Your Name"
 git config user.email "your.email@example.com"
 ```
 
 ### 3. Add All Files
+
 ```bash
 git add .
 ```
 
 ### 4. Initial Commit
+
 ```bash
 git commit -m "Initial commit: SysPilot cross-platform system tool
 
@@ -32,6 +36,7 @@ git commit -m "Initial commit: SysPilot cross-platform system tool
 ```
 
 ### 5. Add Remote Repository (optional)
+
 ```bash
 git remote add origin https://github.com/yourusername/syspilot.git
 git branch -M main
@@ -41,6 +46,7 @@ git push -u origin main
 ## What's Tracked
 
 ✅ **Source Code**
+
 - All Python files (`syspilot/`, `tests/`)
 - Configuration files (`setup.py`, `requirements.txt`, etc.)
 - Documentation (`.md` files)
@@ -48,6 +54,7 @@ git push -u origin main
 - Build configurations (`Makefile`, `setup.cfg`, etc.)
 
 ❌ **Ignored Files/Directories**
+
 - Virtual environments (`.venv/`, `venv/`)
 - Python bytecode (`__pycache__/`, `*.pyc`)
 - Build artifacts (`build/`, `dist/`)
@@ -61,6 +68,7 @@ git push -u origin main
 
 **Total tracked files:** ~68 files
 **Key components:**
+
 - Cross-platform source code
 - Documentation and guides
 - Build and packaging files
@@ -70,6 +78,7 @@ git push -u origin main
 ## Recommended Workflow
 
 1. **Feature Development:**
+
    ```bash
    git checkout -b feature/new-feature
    # Make changes
@@ -79,6 +88,7 @@ git push -u origin main
    ```
 
 2. **Platform Development:**
+
    ```bash
    git checkout -b platform/windows-support
    # Implement Windows features
@@ -87,6 +97,7 @@ git push -u origin main
    ```
 
 3. **Bug Fixes:**
+
    ```bash
    git checkout -b bugfix/issue-description
    # Fix the issue

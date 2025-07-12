@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-10
 
 ### Added
+
 - Initial release of SysPilot
 - **System Cleanup Features**:
   - Automatic temporary file cleanup
@@ -71,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - API documentation
 
 ### Technical Details
+
 - **Python 3.8+ support**
 - **Ubuntu 18.04+ and Debian 10+ compatibility**
 - **Dependencies**: PyQt5, psutil, schedule, and more
@@ -79,12 +81,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Multi-threading** for background operations
 
 ### Security
+
 - **Safe file operations** with permission checks
 - **Configuration validation** to prevent invalid settings
 - **Secure temporary file handling**
 - **No elevated privileges** required for basic operations
 
 ### Performance
+
 - **Efficient monitoring** with configurable intervals
 - **Minimal resource usage** in daemon mode
 - **Optimized cleanup algorithms**
@@ -93,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned Features
+
 - **Advanced Scheduling**: More flexible cleanup schedules
 - **Disk Usage Analyzer**: Visual disk space analysis
 - **Custom Cleanup Rules**: User-defined cleanup patterns
@@ -105,12 +110,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Cloud Integration**: Sync settings across devices
 
 ### Known Issues
+
 - GUI may freeze during intensive cleanup operations
 - Package cache cleanup requires sudo privileges
 - Some system monitoring features may not work in containers
 - Network monitoring rates may be inaccurate on first run
 
 ### Bug Fixes
+
 - None in initial release
 
 ---
@@ -125,11 +132,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Migration Guide
 
 ### From 0.x to 1.0.0
+
 This is the first stable release, so no migration is needed.
 
 ## Support
 
 For support and questions about this release:
+
 - Check the [README](README.md) for installation and usage instructions
 - Review [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines
 - Open an issue on [GitHub Issues](https://github.com/your-username/syspilot/issues)

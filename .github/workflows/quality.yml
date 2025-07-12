@@ -221,8 +221,14 @@ jobs:
       run: |
         echo "### README Quality" >> docs-report.md
         if [ -f README.md ]; then
-          wc -l README.md | awk '{print \"- Lines: \" $1}' >> docs-report.md
-          grep -c '^#' README.md | awk '{print \"- Sections: \" $1}' >> docs-report.md || echo "- Sections: 0" >> docs-report.md
+          # Count lines in README.md
+          lines=$(wc -l < README.md)
+          echo "- Lines: $lines" >> docs-report.md
+
+          # Count sections (lines starting with #)
+          sections=$(grep -c '^#' README.md || echo "0")
+          echo "- Sections: $sections" >> docs-report.md
+
           echo "✅ README.md exists" >> docs-report.md
         else
           echo "❌ README.md missing" >> docs-report.md

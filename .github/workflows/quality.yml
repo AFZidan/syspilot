@@ -66,7 +66,7 @@ jobs:
         pylint syspilot/ --disable=all --enable=duplicate-code --reports=yes | tee -a duplication-report.md || true
 
     - name: 📤 Upload Quality Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: code-quality-reports
         path: |
@@ -134,7 +134,7 @@ jobs:
         " || true
 
     - name: 📤 Upload Performance Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: performance-reports
         path: |
@@ -217,7 +217,7 @@ jobs:
         fi
 
     - name: 📤 Upload Documentation Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: documentation-reports
         path: docs-report.md
@@ -231,7 +231,7 @@ jobs:
 
     steps:
     - name: 📥 Download All Reports
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: reports/
 
@@ -261,7 +261,7 @@ jobs:
         echo "- Documentation Quality: ${{ needs.docs-quality.result }}" >> quality-summary.md
 
     - name: 📤 Upload Quality Summary
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: quality-summary
         path: quality-summary.md

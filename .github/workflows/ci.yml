@@ -8,6 +8,11 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: write  # Required for uploading SARIF results
+  actions: read
+
 env:
   PYTHON_VERSION: '3.9'
 
@@ -330,7 +335,7 @@ jobs:
         output: 'trivy-results.sarif'
 
     - name: 📤 Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
@@ -339,7 +344,7 @@ jobs:
   ci-success:
     name: ✅ CI Success
     runs-on: ubuntu-latest
-    needs: [lint-and-format, type-check, test, build, cross-platform-test, pr-requirements]
+    needs: [lint-and-format, type-check, test, build, cross-platform-test, pr-requirements, security]
     if: always() && github.event.pull_request.draft == false
 
     steps:
@@ -349,7 +354,8 @@ jobs:
               "${{ needs.test.result }}" == "success" &&
               "${{ needs.build.result }}" == "success" &&
               "${{ needs.cross-platform-test.result }}" == "success" &&
-              "${{ needs.pr-requirements.result }}" == "success" ]]; then
+              "${{ needs.pr-requirements.result }}" == "success" &&
+              "${{ needs.security.result }}" == "success" ]]; then
           echo "✅ All CI checks passed!"
         else
           echo "❌ Some CI checks failed:"
@@ -359,5 +365,6 @@ jobs:
           echo "Build: ${{ needs.build.result }}"
           echo "Cross-Platform: ${{ needs.cross-platform-test.result }}"
           echo "PR Requirements: ${{ needs.pr-requirements.result }}"
+          echo "Security: ${{ needs.security.result }}"
           exit 1
         fi

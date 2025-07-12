@@ -238,11 +238,19 @@ jobs:
         python -c "
         try:
             import syspilot
+            from syspilot.platforms import get_platform
             from syspilot.platforms.factory import PlatformFactory
+
+            platform_name = get_platform()
             factory = PlatformFactory()
-            print(f'✅ SysPilot imports successfully on {factory.get_platform()}')
+
+            print(f'✅ SysPilot imports successfully on {platform_name}')
+            print(f'✅ Platform factory available with supported platforms: {factory.get_supported_platforms()}')
+            print(f'✅ Current platform supported: {factory.is_current_platform_supported()}')
         except Exception as e:
             print(f'❌ Import failed: {e}')
+            import traceback
+            traceback.print_exc()
             exit(1)
         "
 

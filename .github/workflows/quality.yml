@@ -123,9 +123,12 @@ jobs:
         echo "### Application Startup Memory Usage" >> performance-report.md
         mprof run python -c "
         import syspilot
+        from syspilot.platforms import get_platform
         from syspilot.platforms.factory import PlatformFactory
+        platform_name = get_platform()
         factory = PlatformFactory()
-        print(f'Platform: {factory.get_platform()}')
+        print(f'Platform: {platform_name}')
+        print(f'Platform supported: {factory.is_current_platform_supported()}')
         " || true
         mprof plot --output=memory-profile.png || true
         echo "Memory profile completed" >> performance-report.md

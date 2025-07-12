@@ -242,11 +242,10 @@ jobs:
             from syspilot.platforms.factory import PlatformFactory
 
             platform_name = get_platform()
-            factory = PlatformFactory()
 
             print(f'✅ SysPilot imports successfully on {platform_name}')
-            print(f'✅ Platform factory available with supported platforms: {factory.get_supported_platforms()}')
-            print(f'✅ Current platform supported: {factory.is_current_platform_supported()}')
+            print(f'✅ Platform factory available with supported platforms: {PlatformFactory.get_supported_platforms()}')
+            print(f'✅ Current platform supported: {PlatformFactory.is_current_platform_supported()}')
         except Exception as e:
             print(f'❌ Import failed: {e}')
             import traceback

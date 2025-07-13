@@ -316,15 +316,15 @@ class MonitoringService:
                 "load_5min": load_avg[1],
                 "load_15min": load_avg[2],
                 "cpu_count": cpu_count,
-                "load_1min_percent": (load_avg[0] / cpu_count) * 100
-                if cpu_count > 0
-                else 0,
-                "load_5min_percent": (load_avg[1] / cpu_count) * 100
-                if cpu_count > 0
-                else 0,
-                "load_15min_percent": (load_avg[2] / cpu_count) * 100
-                if cpu_count > 0
-                else 0,
+                "load_1min_percent": (
+                    (load_avg[0] / cpu_count) * 100 if cpu_count > 0 else 0
+                ),
+                "load_5min_percent": (
+                    (load_avg[1] / cpu_count) * 100 if cpu_count > 0 else 0
+                ),
+                "load_15min_percent": (
+                    (load_avg[2] / cpu_count) * 100 if cpu_count > 0 else 0
+                ),
             }
         except Exception as e:
             self.logger.error(f"Error getting system load: {e}")
@@ -485,9 +485,9 @@ class MonitoringService:
                 "create_time": proc.create_time(),
                 "username": proc.username(),
                 "num_threads": proc.num_threads(),
-                "connections": len(proc.connections())
-                if hasattr(proc, "connections")
-                else 0,
+                "connections": (
+                    len(proc.connections()) if hasattr(proc, "connections") else 0
+                ),
             }
 
         except psutil.NoSuchProcess:

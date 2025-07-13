@@ -50,9 +50,9 @@ class SystemInfoService:
         return {
             "cpu_cores": psutil.cpu_count(logical=False),
             "cpu_threads": psutil.cpu_count(logical=True),
-            "cpu_frequency": psutil.cpu_freq().current
-            if psutil.cpu_freq()
-            else "Unknown",
+            "cpu_frequency": (
+                psutil.cpu_freq().current if psutil.cpu_freq() else "Unknown"
+            ),
             "platform": "windows",
         }
 

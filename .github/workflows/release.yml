@@ -17,19 +17,19 @@ env:
 jobs:
   # Create Release
   create-release:
-    name: 🚀 Create Release
+    name: "[DEPLOY] Create Release"
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
       tag_name: ${{ steps.get_version.outputs.tag }}
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: 🔖 Get Version
+    - name: "[VERSION] Get Version"
       id: get_version
       run: |
         if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
@@ -38,7 +38,7 @@ jobs:
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
         fi
 
-    - name: 📝 Generate Changelog
+    - name: "[CREATE] Generate Changelog"
       id: changelog
       run: |
         if [ -f CHANGELOG.md ]; then
@@ -49,7 +49,7 @@ jobs:
           echo "changelog=New release of SysPilot ${{ steps.get_version.outputs.tag }}" >> $GITHUB_OUTPUT
         fi
 
-    - name: 🚀 Create Release
+    - name: "[DEPLOY] Create Release"
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -60,10 +60,10 @@ jobs:
         body: |
           # SysPilot ${{ steps.get_version.outputs.tag }}
 
-          ## 🚀 What's New
+          ## [DEPLOY] What's New
           ${{ steps.changelog.outputs.changelog }}
 
-          ## 📦 Installation
+          ## [INSTALL] Installation
 
           ### Quick Install (Linux)
           ```bash
@@ -75,14 +75,14 @@ jobs:
           1. Download the appropriate package for your platform
           2. Follow the installation instructions in the README.md
 
-          ## 🐛 Issues
+          ## [BUGS] Issues
           Report bugs at: https://github.com/${{ github.repository }}/issues
         draft: false
         prerelease: ${{ contains(steps.get_version.outputs.tag, 'rc') || contains(steps.get_version.outputs.tag, 'beta') || contains(steps.get_version.outputs.tag, 'alpha') }}
 
   # Build Cross-Platform Packages
   build-packages:
-    name: 🏗️ Build ${{ matrix.os }} Package
+    name: "[BUILD] Build ${{ matrix.os }} Package"
     runs-on: ${{ matrix.os }}
     needs: create-release
     strategy:
@@ -99,22 +99,22 @@ jobs:
             artifact: syspilot-macos.tar.gz
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
 
-    - name: 🏗️ Build Executable (Linux/macOS)
+    - name: "[BUILD] Build Executable (Linux/macOS)"
       if: matrix.platform != 'windows'
       run: |
         pyinstaller --onefile --windowed --name syspilot \
@@ -122,7 +122,7 @@ jobs:
           --add-data "syspilot:syspilot" \
           main.py
 
-    - name: 🏗️ Build Executable (Windows)
+    - name: "[BUILD] Build Executable (Windows)"
       if: matrix.platform == 'windows'
       run: |
         pyinstaller --onefile --windowed --name syspilot.exe \
@@ -130,7 +130,7 @@ jobs:
           --add-data "syspilot;syspilot" \
           main.py
 
-    - name: 📦 Create Package (Linux/macOS)
+    - name: "[INSTALL] Create Package (Linux/macOS)"
       if: matrix.platform != 'windows'
       run: |
         mkdir -p package/syspilot
@@ -141,7 +141,7 @@ jobs:
         cd package
         tar -czf ${{ matrix.artifact }} syspilot/
 
-    - name: 📦 Create Package (Windows)
+    - name: "[INSTALL] Create Package (Windows)"
       if: matrix.platform == 'windows'
       run: |
         mkdir package\syspilot
@@ -152,7 +152,7 @@ jobs:
         cd package
         powershell Compress-Archive -Path syspilot -DestinationPath ${{ matrix.artifact }}
 
-    - name: 📤 Upload Release Asset
+    - name: "[UPLOAD] Upload Release Asset"
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -164,33 +164,33 @@ jobs:
 
   # PyPI Release
   pypi-release:
-    name: 📦 PyPI Release
+    name: "[INSTALL] PyPI Release"
     runs-on: ubuntu-latest
     needs: create-release
     if: github.repository_owner == 'your-username' # Replace with actual username
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Build Dependencies
+    - name: "[INSTALL] Install Build Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install build twine
 
-    - name: 🏗️ Build Package
+    - name: "[BUILD] Build Package"
       run: python -m build
 
-    - name: 🔍 Check Package
+    - name: "[CHECK] Check Package"
       run: twine check dist/*
 
-    - name: 📤 Publish to PyPI
+    - name: "[UPLOAD] Publish to PyPI"
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}

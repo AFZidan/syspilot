@@ -135,9 +135,9 @@ class SystemInfoService:
                 with open("/proc/cpuinfo", "r") as f:
                     for line in f:
                         if line.startswith("cpu MHz"):
-                            cpu_info[
-                                "frequency"
-                            ] = f"{float(line.split(':')[1].strip()):.0f} MHz"
+                            cpu_info["frequency"] = (
+                                f"{float(line.split(':')[1].strip()):.0f} MHz"
+                            )
                             break
             except Exception:
                 pass
@@ -226,9 +226,9 @@ class SystemInfoService:
                                         "total": total,
                                         "used": used,
                                         "free": free,
-                                        "percent": (used / total) * 100
-                                        if total > 0
-                                        else 0,
+                                        "percent": (
+                                            (used / total) * 100 if total > 0 else 0
+                                        ),
                                     }
                                 )
                             except Exception:

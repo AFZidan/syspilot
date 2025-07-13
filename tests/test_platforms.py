@@ -35,7 +35,7 @@ class TestCrossPlatform(unittest.TestCase):
         expected = ["linux", "windows", "macos"]
         self.assertEqual(platforms, expected)
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_linux_service_creation(self, mock_get_platform):
         """Test Linux service creation"""
         mock_get_platform.return_value = "linux"
@@ -52,7 +52,7 @@ class TestCrossPlatform(unittest.TestCase):
         system_info_service = PlatformFactory.create_system_info_service()
         self.assertIsNotNone(system_info_service)
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_windows_service_creation(self, mock_get_platform):
         """Test Windows service creation"""
         mock_get_platform.return_value = "windows"
@@ -69,7 +69,7 @@ class TestCrossPlatform(unittest.TestCase):
         system_info_service = PlatformFactory.create_system_info_service()
         self.assertIsNotNone(system_info_service)
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_macos_service_creation(self, mock_get_platform):
         """Test macOS service creation"""
         mock_get_platform.return_value = "macos"
@@ -86,7 +86,7 @@ class TestCrossPlatform(unittest.TestCase):
         system_info_service = PlatformFactory.create_system_info_service()
         self.assertIsNotNone(system_info_service)
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_unsupported_platform_error(self, mock_get_platform):
         """Test unsupported platform raises error"""
         mock_get_platform.return_value = "unknown"
@@ -104,7 +104,7 @@ class TestCrossPlatform(unittest.TestCase):
 class TestWindowsPlaceholders(unittest.TestCase):
     """Test Windows placeholder implementations"""
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_windows_cleanup_placeholder(self, mock_get_platform):
         """Test Windows cleanup service placeholder"""
         mock_get_platform.return_value = "windows"
@@ -116,7 +116,7 @@ class TestWindowsPlaceholders(unittest.TestCase):
         self.assertIn("errors", result)
         self.assertIn("Windows cleanup not yet implemented", result["errors"])
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_windows_monitoring_placeholder(self, mock_get_platform):
         """Test Windows monitoring service placeholder"""
         mock_get_platform.return_value = "windows"
@@ -136,7 +136,7 @@ class TestWindowsPlaceholders(unittest.TestCase):
 class TestMacOSPlaceholders(unittest.TestCase):
     """Test macOS placeholder implementations"""
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_macos_cleanup_placeholder(self, mock_get_platform):
         """Test macOS cleanup service placeholder"""
         mock_get_platform.return_value = "macos"
@@ -148,7 +148,7 @@ class TestMacOSPlaceholders(unittest.TestCase):
         self.assertIn("errors", result)
         self.assertIn("macOS cleanup not yet implemented", result["errors"])
 
-    @patch("syspilot.platforms.get_platform")
+    @patch("syspilot.platforms.factory.get_platform")
     def test_macos_monitoring_placeholder(self, mock_get_platform):
         """Test macOS monitoring service placeholder"""
         mock_get_platform.return_value = "macos"

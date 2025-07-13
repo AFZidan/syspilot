@@ -19,56 +19,56 @@ env:
 jobs:
   # Job 1: Code Quality and Linting
   lint-and-format:
-    name: 🔍 Code Quality & Linting
+    name: "[CHECK] Code Quality & Linting"
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         # For linting job, we need dev dependencies but can be more selective
         pip install black>=23.12.0 isort>=5.13.0 flake8>=6.1.0 pylint>=3.0.0 bandit>=1.7.5
 
-    - name: 🔍 Run Black (Code Formatting)
+    - name: "[CHECK] Run Black (Code Formatting)"
       run: |
         black --check --diff .
       continue-on-error: false
 
-    - name: 🔍 Run isort (Import Sorting)
+    - name: "[CHECK] Run isort (Import Sorting)"
       run: |
         isort --check-only --diff .
       continue-on-error: false
 
-    - name: 🔍 Run flake8 (Linting)
+    - name: "[CHECK] Run flake8 (Linting)"
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
-    - name: 🔍 Run pylint (Advanced Linting)
+    - name: "[CHECK] Run pylint (Advanced Linting)"
       run: |
         pylint syspilot/ --exit-zero --output-format=text --reports=yes
       continue-on-error: true
 
-    - name: 🔍 Run bandit (Security Check)
+    - name: "[CHECK] Run bandit (Security Check)"
       run: |
         bandit -r syspilot/ -f json -o bandit-report.json || true
         bandit -r syspilot/ --severity-level medium
       continue-on-error: true
 
-    - name: 📤 Upload Bandit Report
+    - name: "[UPLOAD] Upload Bandit Report"
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -77,35 +77,35 @@ jobs:
 
   # Job 2: Type Checking
   type-check:
-    name: 🔍 Type Checking
+    name: "[CHECK] Type Checking"
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         # For type checking, we only need mypy and type stubs
         pip install mypy>=1.8.0 types-requests>=2.31.0 types-psutil>=5.9.0 types-Pillow>=10.0.0
 
-    - name: 🔍 Run mypy (Type Checking)
+    - name: "[CHECK] Run mypy (Type Checking)"
       run: |
         mypy syspilot/ --ignore-missing-imports --show-error-codes
       continue-on-error: true
 
   # Job 3: Tests
   test:
-    name: 🧪 Tests
+    name: "[TEST] Tests"
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     strategy:
@@ -113,23 +113,23 @@ jobs:
         python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python ${{ matrix.python-version }}
+    - name: "[PYTHON] Set up Python ${{ matrix.python-version }}"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
 
-    - name: 🖥️ Setup Display (for Qt tests)
+    - name: "[DISPLAY] Setup Display (for Qt tests)"
       run: |
         sudo apt-get update
         sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -138,21 +138,21 @@ jobs:
         if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
           # Use Python 3.8 compatible requirements file
           pip install -r requirements-dev-py38.txt
-          echo "✅ Installed Python 3.8 compatible development dependencies"
+          echo "[SUCCESS] Installed Python 3.8 compatible development dependencies"
         else
           # Python 3.9+ can use all packages from requirements-dev.txt
           pip install -r requirements-dev.txt
-          echo "✅ Installed full development dependencies for Python ${{ matrix.python-version }}"
+          echo "[SUCCESS] Installed full development dependencies for Python ${{ matrix.python-version }}"
         fi
 
-    - name: 🧪 Run pytest
+    - name: "[TEST] Run pytest"
       env:
         DISPLAY: :99
         QT_QPA_PLATFORM: offscreen
       run: |
         pytest tests/ -v --cov=syspilot --cov-report=xml --cov-report=html --cov-report=term-missing
 
-    - name: 📤 Upload Coverage to Codecov
+    - name: "[UPLOAD] Upload Coverage to Codecov"
       uses: codecov/codecov-action@v3
       if: matrix.python-version == '3.9'
       with:
@@ -161,7 +161,7 @@ jobs:
         name: codecov-umbrella
         fail_ci_if_error: false
 
-    - name: 📤 Upload Coverage Report
+    - name: "[UPLOAD] Upload Coverage Report"
       uses: actions/upload-artifact@v4
       if: matrix.python-version == '3.9'
       with:
@@ -170,32 +170,32 @@ jobs:
 
   # Job 4: Build Test
   build:
-    name: 🏗️ Build Test
+    name: "[BUILD] Build Test"
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     needs: [lint-and-format, test]
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install build wheel
         pip install -r requirements.txt
 
-    - name: 🏗️ Build Package
+    - name: "[BUILD] Build Package"
       run: |
         python -m build
 
-    - name: 📤 Upload Build Artifacts
+    - name: "[UPLOAD] Upload Build Artifacts"
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
@@ -203,7 +203,7 @@ jobs:
 
   # Job 5: Cross-Platform Test
   cross-platform-test:
-    name: 🌐 Cross-Platform Test
+    name: "[PLATFORM] Cross-Platform Test"
     runs-on: ${{ matrix.os }}
     if: github.event.pull_request.draft == false
     strategy:
@@ -212,16 +212,16 @@ jobs:
         python-version: ['3.9']
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python ${{ matrix.python-version }}
+    - name: "[PYTHON] Set up Python ${{ matrix.python-version }}"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
 
-    - name: 🖥️ Setup Display (Linux)
+    - name: "[DISPLAY] Setup Display (Linux)"
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
@@ -229,12 +229,12 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 🧪 Basic Import Test
+    - name: "[TEST] Basic Import Test"
       env:
         DISPLAY: :99
         QT_QPA_PLATFORM: offscreen
@@ -248,11 +248,11 @@ jobs:
 
             platform_name = get_platform()
 
-            print(f'✅ SysPilot imports successfully on {platform_name}')
-            print(f'✅ Platform factory available with supported platforms: {PlatformFactory.get_supported_platforms()}')
-            print(f'✅ Current platform supported: {PlatformFactory.is_current_platform_supported()}')
+            print(f'[SUCCESS] SysPilot imports successfully on {platform_name}')
+            print(f'[SUCCESS] Platform factory available with supported platforms: {PlatformFactory.get_supported_platforms()}')
+            print(f'[SUCCESS] Current platform supported: {PlatformFactory.is_current_platform_supported()}')
         except Exception as e:
-            print(f'❌ Import failed: {e}')
+            print(f'[FAILED] Import failed: {e}')
             import traceback
             traceback.print_exc()
             exit(1)
@@ -260,40 +260,40 @@ jobs:
 
   # Job 6: PR Requirements Check
   pr-requirements:
-    name: 📋 PR Requirements Check
+    name: "[CHECK] PR Requirements Check"
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: 🔍 Check PR Title Format
+    - name: "[CHECK] Check PR Title Format"
       run: |
         title="${{ github.event.pull_request.title }}"
         if [[ $title =~ ^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+ ]]; then
-          echo "✅ PR title follows conventional commit format"
+          echo "[SUCCESS] PR title follows conventional commit format"
         else
-          echo "❌ PR title must follow format: type(scope): description"
+          echo "[FAILED] PR title must follow format: type(scope): description"
           echo "Examples: feat(ui): add new dashboard widget"
           echo "          fix(auth): resolve login timeout issue"
           echo "          docs: update installation guide"
           exit 1
         fi
 
-    - name: 🔍 Check PR Description
+    - name: "[CHECK] Check PR Description"
       run: |
         description="${{ github.event.pull_request.body }}"
         if [[ ${#description} -lt 50 ]]; then
-          echo "❌ PR description must be at least 50 characters"
+          echo "[FAILED] PR description must be at least 50 characters"
           exit 1
         else
-          echo "✅ PR description is adequate"
+          echo "[SUCCESS] PR description is adequate"
         fi
 
-    - name: 🔍 Check Changed Files
+    - name: "[CHECK] Check Changed Files"
       run: |
         changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
         echo "Changed files:"
@@ -301,32 +301,32 @@ jobs:
 
         # Check if tests are updated for new features
         if echo "$changed_files" | grep -E "syspilot/.*\.py$" && ! echo "$changed_files" | grep -E "tests/.*\.py$"; then
-          echo "⚠️ Warning: Code changes detected but no test updates found"
+          echo "[WARNING] Warning: Code changes detected but no test updates found"
           echo "Consider adding or updating tests for your changes"
         fi
 
-    - name: 🔍 Check for Breaking Changes
+    - name: "[CHECK] Check for Breaking Changes"
       run: |
         changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
         breaking_patterns="syspilot/core/app.py|syspilot/platforms/factory.py|main.py"
 
         if echo "$changed_files" | grep -E "$breaking_patterns"; then
-          echo "⚠️ Critical files modified - ensure backward compatibility"
+          echo "[WARNING] Critical files modified - ensure backward compatibility"
           echo "Files that may introduce breaking changes:"
           echo "$changed_files" | grep -E "$breaking_patterns"
         fi
 
   # Job 7: Security Scan
   security:
-    name: 🔒 Security Scan
+    name: "[SECURITY] Security Scan"
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🔒 Run Trivy vulnerability scanner
+    - name: "[SECURITY] Run Trivy vulnerability scanner"
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'fs'
@@ -334,7 +334,7 @@ jobs:
         format: 'sarif'
         output: 'trivy-results.sarif'
 
-    - name: 📤 Upload Trivy scan results
+    - name: "[UPLOAD] Upload Trivy scan results"
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
@@ -342,13 +342,13 @@ jobs:
 
   # Summary Job
   ci-success:
-    name: ✅ CI Success
+    name: "[SUCCESS] CI Success"
     runs-on: ubuntu-latest
     needs: [lint-and-format, type-check, test, build, cross-platform-test, pr-requirements, security]
     if: always() && github.event.pull_request.draft == false
 
     steps:
-    - name: 📊 Check All Jobs Status
+    - name: "[ANALYSIS] Check All Jobs Status"
       run: |
         if [[ "${{ needs.lint-and-format.result }}" == "success" &&
               "${{ needs.test.result }}" == "success" &&
@@ -356,9 +356,9 @@ jobs:
               "${{ needs.cross-platform-test.result }}" == "success" &&
               "${{ needs.pr-requirements.result }}" == "success" &&
               "${{ needs.security.result }}" == "success" ]]; then
-          echo "✅ All CI checks passed!"
+          echo "[SUCCESS] All CI checks passed!"
         else
-          echo "❌ Some CI checks failed:"
+          echo "[FAILED] Some CI checks failed:"
           echo "Lint & Format: ${{ needs.lint-and-format.result }}"
           echo "Type Check: ${{ needs.type-check.result }}"
           echo "Tests: ${{ needs.test.result }}"

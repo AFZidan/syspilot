@@ -1,4 +1,4 @@
-name: 📊 Code Quality Analysis
+name: "[ANALYSIS] Code Quality Analysis"
 
 on:
   pull_request:
@@ -16,22 +16,22 @@ env:
 jobs:
   # Code Quality Metrics
   code-quality:
-    name: 📊 Code Quality Metrics
+    name: "[ANALYSIS] Code Quality Metrics"
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -45,7 +45,7 @@ jobs:
         # Install system tools for license checking
         sudo apt-get install -y licensecheck
 
-    - name: 📊 Code Complexity Analysis (Radon)
+    - name: "[ANALYSIS] Code Complexity Analysis (Radon)"
       run: |
         echo "## Code Complexity Report" > complexity-report.md
         echo "### Cyclomatic Complexity" >> complexity-report.md
@@ -57,12 +57,12 @@ jobs:
         echo "### Raw Metrics" >> complexity-report.md
         radon raw syspilot/ | tee -a complexity-report.md || echo "Radon raw analysis failed" >> complexity-report.md
 
-    - name: 📊 Code Quality Score (Xenon)
+    - name: "[ANALYSIS] Code Quality Score (Xenon)"
       run: |
         echo "## Code Quality Score" >> complexity-report.md
         xenon --max-absolute A --max-modules A --max-average A syspilot/ | tee -a complexity-report.md || echo "Xenon analysis failed" >> complexity-report.md
 
-    - name: 📊 License Check
+    - name: "[ANALYSIS] License Check"
       run: |
         echo "## License Compliance" > license-report.md
         if command -v licensecheck >/dev/null 2>&1; then
@@ -71,13 +71,13 @@ jobs:
           echo "License check tool not available" >> license-report.md
         fi
 
-    - name: 📊 Code Duplication Check
+    - name: "[ANALYSIS] Code Duplication Check"
       run: |
         echo "## Code Duplication Analysis" > duplication-report.md
         # Using pylint for duplicate code detection
         pylint syspilot/ --disable=all --enable=duplicate-code --reports=yes | tee -a duplication-report.md || true
 
-    - name: 📤 Upload Quality Reports
+    - name: "[UPLOAD] Upload Quality Reports"
       uses: actions/upload-artifact@v4
       with:
         name: code-quality-reports
@@ -88,33 +88,33 @@ jobs:
 
   # Performance Analysis
   performance-analysis:
-    name: ⚡ Performance Analysis
+    name: "[PERFORMANCE] Performance Analysis"
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 🖥️ Setup Display
+    - name: "[DISPLAY] Setup Display"
       run: |
         sudo apt-get update
         sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: ⚡ Memory Profiling
+    - name: "[PERFORMANCE] Memory Profiling"
       env:
         DISPLAY: :99
         QT_QPA_PLATFORM: offscreen
@@ -132,7 +132,7 @@ jobs:
         mprof plot --output=memory-profile.png || true
         echo "Memory profile completed" >> performance-report.md
 
-    - name: ⚡ Performance Benchmarks
+    - name: "[PERFORMANCE] Performance Benchmarks"
       env:
         DISPLAY: :99
         QT_QPA_PLATFORM: offscreen
@@ -147,7 +147,7 @@ jobs:
         print(f'Import time: {import_time:.4f} seconds' >> 'performance-report.md')
         " || true
 
-    - name: 📤 Upload Performance Reports
+    - name: "[UPLOAD] Upload Performance Reports"
       uses: actions/upload-artifact@v4
       with:
         name: performance-reports
@@ -158,26 +158,26 @@ jobs:
 
   # Documentation Quality Check
   docs-quality:
-    name: 📚 Documentation Quality
+    name: "[DOCS] Documentation Quality"
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
-    - name: 📦 Install Dependencies
+    - name: "[INSTALL] Install Dependencies"
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: 📚 Docstring Coverage
+    - name: "[DOCS] Docstring Coverage"
       run: |
         echo "## Documentation Coverage Report" > docs-report.md
         echo "### Docstring Coverage" >> docs-report.md
@@ -219,7 +219,7 @@ jobs:
             f.write(f'- Coverage: {coverage:.1f}%\n\n')
         " || true
 
-    - name: 📚 README Quality Check
+    - name: "[DOCS] README Quality Check"
       run: |
         echo "### README Quality" >> docs-report.md
         if [ -f README.md ]; then
@@ -231,12 +231,12 @@ jobs:
           sections=$(grep -c '^#' README.md || echo "0")
           echo "- Sections: $sections" >> docs-report.md
 
-          echo "✅ README.md exists" >> docs-report.md
+          echo "[SUCCESS] README.md exists" >> docs-report.md
         else
-          echo "❌ README.md missing" >> docs-report.md
+          echo "[FAILED] README.md missing" >> docs-report.md
         fi
 
-    - name: 📤 Upload Documentation Reports
+    - name: "[UPLOAD] Upload Documentation Reports"
       uses: actions/upload-artifact@v4
       with:
         name: documentation-reports
@@ -244,20 +244,20 @@ jobs:
 
   # Quality Summary
   quality-summary:
-    name: 📋 Quality Summary
+    name: "[CHECK] Quality Summary"
     runs-on: ubuntu-latest
     needs: [code-quality, performance-analysis, docs-quality]
     if: always()
 
     steps:
-    - name: 📥 Download All Reports
+    - name: "[CHECKOUT] Download All Reports"
       uses: actions/download-artifact@v4
       with:
         path: reports/
 
-    - name: 📋 Generate Quality Summary
+    - name: "[CHECK] Generate Quality Summary"
       run: |
-        echo "# 📊 Code Quality Summary" > quality-summary.md
+        echo "# [ANALYSIS] Code Quality Summary" > quality-summary.md
         echo "" >> quality-summary.md
         echo "Generated on: $(date)" >> quality-summary.md
         echo "" >> quality-summary.md
@@ -280,13 +280,13 @@ jobs:
         echo "- Performance Analysis: ${{ needs.performance-analysis.result }}" >> quality-summary.md
         echo "- Documentation Quality: ${{ needs.docs-quality.result }}" >> quality-summary.md
 
-    - name: 📤 Upload Quality Summary
+    - name: "[UPLOAD] Upload Quality Summary"
       uses: actions/upload-artifact@v4
       with:
         name: quality-summary
         path: quality-summary.md
 
-    - name: 💬 Comment on PR
+    - name: "[COMMENT] Comment on PR"
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
       with:
@@ -306,40 +306,40 @@ jobs:
 
   # Pre-commit Hook Updates
   pre-commit-autoupdate:
-    name: 🔄 Update Pre-commit Hooks
+    name: "[UPDATE] Update Pre-commit Hooks"
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
-    - name: 📥 Checkout Code
+    - name: "[CHECKOUT] Checkout Code"
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: 🐍 Set up Python
+    - name: "[PYTHON] Set up Python"
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: 📦 Install pre-commit
+    - name: "[INSTALL] Install pre-commit"
       run: |
         python -m pip install --upgrade pip
         pip install pre-commit
 
-    - name: 🔄 Update pre-commit hooks
+    - name: "[UPDATE] Update pre-commit hooks"
       run: |
         pre-commit autoupdate
 
-    - name: 🧪 Test updated hooks
+    - name: "[TEST] Test updated hooks"
       run: |
         pre-commit run --all-files || echo "Some hooks failed but that's expected"
 
-    - name: 📝 Create Pull Request
+    - name: "[CREATE] Create Pull Request"
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: "chore(hooks): update pre-commit hooks"
-        title: "🔄 Update pre-commit hooks"
+        title: "[UPDATE] Update pre-commit hooks"
         body: |
           ## Pre-commit Hook Updates
 

@@ -141,5 +141,5 @@ For support and questions about this release:
 
 - Check the [README](README.md) for installation and usage instructions
 - Review [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines
-- Open an issue on [GitHub Issues](https://github.com/your-username/syspilot/issues)
-- Join discussions on [GitHub Discussions](https://github.com/your-username/syspilot/discussions)
+- Open an issue on [GitHub Issues](https://github.com/AFZidan/syspilot/issues)
+- Join discussions on [GitHub Discussions](https://github.com/AFZidan/syspilot/discussions)

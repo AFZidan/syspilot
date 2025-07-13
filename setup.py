@@ -37,7 +37,7 @@ setup(
     description="Professional System Automation & Cleanup Tool",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your-username/syspilot",
+    url="https://github.com/AFZidan/syspilot",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",

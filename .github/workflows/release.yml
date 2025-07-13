@@ -167,7 +167,7 @@ jobs:
     name: "[INSTALL] PyPI Release"
     runs-on: ubuntu-latest
     needs: create-release
-    if: github.repository_owner == 'your-username' # Replace with actual username
+    if: github.repository_owner == 'AFZidan' # Replace with actual username
 
     steps:
     - name: "[CHECKOUT] Checkout Code"

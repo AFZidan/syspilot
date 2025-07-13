@@ -83,8 +83,6 @@ make install-deb
 make help
 ```
 
-For detailed Makefile usage, see [MAKEFILE_USAGE.md](MAKEFILE_USAGE.md).
-
 ## Installation
 
 ### Prerequisites
@@ -96,7 +94,7 @@ For detailed Makefile usage, see [MAKEFILE_USAGE.md](MAKEFILE_USAGE.md).
 ### Recommended Installation (using pipx)
 
 ```bash
-git clone https://github.com/your-username/syspilot.git
+git clone https://github.com/AFZidan/syspilot.git
 cd syspilot
 chmod +x install_pipx.sh
 ./install_pipx.sh
@@ -107,7 +105,7 @@ This method uses `pipx` to install SysPilot in an isolated environment, which is
 ### Alternative Installation (legacy)
 
 ```bash
-git clone https://github.com/your-username/syspilot.git
+git clone https://github.com/AFZidan/syspilot.git
 cd syspilot
 chmod +x install.sh
 ./install.sh
@@ -158,7 +156,7 @@ syspilot --daemon
 ### Setup Development Environment
 
 ```bash
-git clone https://github.com/your-username/syspilot.git
+git clone https://github.com/AFZidan/syspilot.git
 cd syspilot
 python3 -m venv venv
 source venv/bin/activate
@@ -209,9 +207,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/syspilot/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/syspilot/discussions)
-- **Wiki**: [Project Wiki](https://github.com/your-username/syspilot/wiki)
+- **Issues**: [GitHub Issues](https://github.com/AFZidan/syspilot/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/AFZidan/syspilot/discussions)
+- **Wiki**: [Project Wiki](https://github.com/AFZidan/syspilot/wiki)
 
 ## Changelog
 
@@ -377,7 +375,5 @@ syspilot/
 ├── utils/                  # Configuration & utilities
 └── widgets/                # GUI components & charts
 ```
-
-For detailed information about the cross-platform architecture, see [CROSS_PLATFORM_STRUCTURE.md](CROSS_PLATFORM_STRUCTURE.md).
 
 ---

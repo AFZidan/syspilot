@@ -350,14 +350,25 @@ jobs:
     steps:
     - name: "[ANALYSIS] Check All Jobs Status"
       run: |
+        # Check core jobs that always run
         if [[ "${{ needs.lint-and-format.result }}" == "success" &&
               "${{ needs.type-check.result }}" == "success" &&
               "${{ needs.test.result }}" == "success" &&
               "${{ needs.build.result }}" == "success" &&
               "${{ needs.cross-platform-test.result }}" == "success" &&
-              "${{ needs.pr-requirements.result }}" == "success" &&
               "${{ needs.security.result }}" == "success" ]]; then
-          echo "[SUCCESS] All CI checks passed!"
+          
+          # Check PR-specific job only if it was supposed to run
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            if [[ "${{ needs.pr-requirements.result }}" == "success" ]]; then
+              echo "[SUCCESS] All CI checks passed (including PR requirements)!"
+            else
+              echo "[FAILED] PR requirements check failed: ${{ needs.pr-requirements.result }}"
+              exit 1
+            fi
+          else
+            echo "[SUCCESS] All CI checks passed!"
+          fi
         else
           echo "[FAILED] Some CI checks failed:"
           echo "Lint & Format: ${{ needs.lint-and-format.result }}"

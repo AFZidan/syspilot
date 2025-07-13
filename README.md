@@ -2,7 +2,13 @@
 
 <div align="center">
 
-![SysPilot Logo](assets/syspilot_banner.png)
+![S## Platform Support
+
+| Platform | Status | Features |
+|----------|--------|----------|
+| Linux | ✅ Complete | Full cleanup, monitoring, GUI, releases available |
+| Windows | 🚧 In Development | Architecture ready, implementation in progress |
+| macOS | 📋 Planned | Architecture ready, implementation planned | Logo](assets/syspilot_banner.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -39,9 +45,9 @@ SysPilot is a modern system utility that helps keep your computer clean and runn
 
 | Platform | Status | Features |
 |----------|--------|----------|
-| Linux | ✅ Ready | Full cleanup, monitoring, GUI |
-| Windows | 🚧 In Progress | Basic structure, planned features |
-| macOS | 📋 Planned | Architecture ready |
+| Linux | ✅ Complete | Full cleanup, monitoring, GUI, releases available |
+| Windows | 🚧 In Development | Architecture ready, implementation in progress |
+| macOS | 📋 Planned | Architecture ready, implementation planned |
 
 ## Quick Start
 

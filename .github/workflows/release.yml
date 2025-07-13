@@ -74,8 +74,11 @@ jobs:
           ```
 
           ### Manual Install
-          1. Download the appropriate package for your platform
-          2. Follow the installation instructions in the README.md
+          1. Download the Linux package from the assets below
+          2. Extract and run the installation script
+          3. Follow the setup instructions in the README.md
+
+          **Note**: Windows and macOS builds are not yet available. Linux is fully supported.
 
           ## Issues
           Report bugs at: https://github.com/${{ github.repository }}/issues
@@ -83,23 +86,11 @@ jobs:
         prerelease: ${{ contains(steps.get_version.outputs.tag, 'rc') || contains(steps.get_version.outputs.tag, 'beta') || contains(steps.get_version.outputs.tag, 'alpha') }}
         generate_release_notes: true
 
-  # Build Cross-Platform Packages
+  # Build Linux Package
   build-packages:
-    name: "[BUILD] Build ${{ matrix.os }} Package"
-    runs-on: ${{ matrix.os }}
+    name: "[BUILD] Build Linux Package"
+    runs-on: ubuntu-latest
     needs: create-release
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            platform: linux
-            artifact: syspilot-linux.tar.gz
-          - os: windows-latest
-            platform: windows
-            artifact: syspilot-windows.zip
-          - os: macos-latest
-            platform: macos
-            artifact: syspilot-macos.tar.gz
 
     steps:
     - name: "[CHECKOUT] Checkout Code"
@@ -117,24 +108,14 @@ jobs:
         pip install -r requirements.txt
         pip install pyinstaller
 
-    - name: "[BUILD] Build Executable (Linux/macOS)"
-      if: matrix.platform != 'windows'
+    - name: "[BUILD] Build Executable"
       run: |
         pyinstaller --onefile --windowed --name syspilot \
           --add-data "assets:assets" \
           --add-data "syspilot:syspilot" \
           main.py
 
-    - name: "[BUILD] Build Executable (Windows)"
-      if: matrix.platform == 'windows'
-      run: |
-        pyinstaller --onefile --windowed --name syspilot.exe \
-          --add-data "assets;assets" \
-          --add-data "syspilot;syspilot" \
-          main.py
-
-    - name: "[INSTALL] Create Package (Linux/macOS)"
-      if: matrix.platform != 'windows'
+    - name: "[INSTALL] Create Package"
       run: |
         mkdir -p package/syspilot
         cp dist/syspilot package/syspilot/
@@ -142,24 +123,13 @@ jobs:
         cp README.md LICENSE package/syspilot/
         cp install.sh package/syspilot/
         cd package
-        tar -czf ${{ matrix.artifact }} syspilot/
-
-    - name: "[INSTALL] Create Package (Windows)"
-      if: matrix.platform == 'windows'
-      run: |
-        mkdir package\syspilot
-        copy dist\syspilot.exe package\syspilot\
-        xcopy assets package\syspilot\assets\ /E /I
-        copy README.md package\syspilot\
-        copy LICENSE package\syspilot\
-        cd package
-        powershell Compress-Archive -Path syspilot -DestinationPath ${{ matrix.artifact }}
+        tar -czf syspilot-linux.tar.gz syspilot/
 
     - name: "[UPLOAD] Upload Release Asset"
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ needs.create-release.outputs.tag_name }}
-        files: package/${{ matrix.artifact }}
+        files: package/syspilot-linux.tar.gz
 
   # PyPI Release
   pypi-release:

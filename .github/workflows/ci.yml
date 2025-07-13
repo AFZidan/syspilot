@@ -273,7 +273,7 @@ jobs:
     - name: "[CHECK] Check PR Title Format"
       run: |
         title="${{ github.event.pull_request.title }}"
-        if [[ $title =~ ^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+ ]]; then
+        if [[ "$title" =~ ^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+ ]]; then
           echo "[SUCCESS] PR title follows conventional commit format"
         else
           echo "[FAILED] PR title must follow format: type(scope): description"
@@ -351,6 +351,7 @@ jobs:
     - name: "[ANALYSIS] Check All Jobs Status"
       run: |
         if [[ "${{ needs.lint-and-format.result }}" == "success" &&
+              "${{ needs.type-check.result }}" == "success" &&
               "${{ needs.test.result }}" == "success" &&
               "${{ needs.build.result }}" == "success" &&
               "${{ needs.cross-platform-test.result }}" == "success" &&

@@ -12,9 +12,21 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 # Read requirements
-with open("requirements.txt", "r", encoding="utf-8") as fh:
+requirements = []
+try:
+    with open("requirements.txt", "r", encoding="utf-8") as fh:
+        requirements = [
+            line.strip() for line in fh if line.strip() and not line.startswith("#")
+        ]
+except FileNotFoundError:
+    # Fallback to minimal requirements if file not found during build
     requirements = [
-        line.strip() for line in fh if line.strip() and not line.startswith("#")
+        "psutil>=5.9.0",
+        "PyQt5>=5.15.9",
+        "matplotlib>=3.7.0",
+        "Pillow>=10.0.0",
+        "schedule>=1.2.0",
+        "requests>=2.31.0",
     ]
 
 setup(

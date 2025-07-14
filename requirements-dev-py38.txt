@@ -37,7 +37,7 @@ pip-audit>=2.6.0
 pydocstyle>=6.3.0
 
 # Pre-commit hooks (Python 3.8 compatible version)
-pre-commit>=3.5.0,<3.6.0
+pre-commit>=3.5.0,<4.3.0
 
 # Documentation generation
 sphinx>=6.2.0,<7.0.0  # Sphinx 7.x requires Python 3.9+
